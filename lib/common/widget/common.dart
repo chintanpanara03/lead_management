@@ -289,3 +289,57 @@ Widget internetLoder({double cheight, double cwidth}) {
     ),
   );
 }
+
+Widget detailsappbar({String appbarTitle}) {
+  return AppBar(
+    backgroundColor: Colors.black54,
+    centerTitle: true,
+    title: Text(
+      appbarTitle,
+      style: TextStyle(color: Colors.white),
+    ),
+  );
+}
+
+Widget mainpadding({Widget child}) {
+  return Padding(
+    padding: EdgeInsets.all(10),
+    child: child,
+  );
+}
+
+Widget boldText({String text}) {
+  return Text(
+    text,
+    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+  );
+}
+
+Widget simpleText({String text}) {
+  return Text(
+    text,
+    style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black54),
+  );
+}
+
+Widget simplepadding({Widget child}) {
+  return Padding(
+    padding: EdgeInsets.all(5),
+    child: child,
+  );
+}
+
+Widget boldTextColor({String text}) {
+  return Text(
+    text,
+    style: TextStyle(
+        fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+  );
+}
+
+Widget simpleTextColor({String text}) {
+  return Text(
+    text,
+    style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+  );
+}

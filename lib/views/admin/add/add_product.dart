@@ -148,7 +148,8 @@ class _AddProductState extends State<AddProduct> {
   }
 
   seleCateId() {
-    int categoryId;
+    String categoryId;
+    String categoryName;
     final formState = formKey.currentState;
     if (formState.validate()) {
       formState.save();
@@ -160,16 +161,17 @@ class _AddProductState extends State<AddProduct> {
         value.docs.forEach((element) {
           setState(() {
             categoryId = element['CategoryId'];
-            getProduct(categoryId);
+            categoryName = element['CategoryName'];
+            getProduct(categoryId, categoryName);
           });
         });
       });
     }
   }
 
-  getProduct(int categoryId) {
-    int cId = categoryId;
-    int productId = 0;
+  getProduct(String categoryId, String categoryName) {
+    String cId = categoryId;
+    String cName = categoryName;
     List<String> productList = List();
     Map<String, dynamic> dataMap = Map();
 
@@ -181,27 +183,29 @@ class _AddProductState extends State<AddProduct> {
         dataMap = doc.data();
         productList.add(dataMap["ProductName"]);
       });
-      productId = productList.length + 1;
       if (productList.isNotEmpty) {
         if (productList.contains(product)) {
           _scaffoldKey.currentState.showSnackBar(
               SnackBar(content: Text('Product is already exiset')));
         } else {
-          addProduct(productId, cId);
+          addProduct(cId, cName);
         }
       } else {
-        addProduct(productId, cId);
+        addProduct(cId, cName);
       }
     });
   }
 
-  addProduct(int productId, int cId) {
+  addProduct(String cId, String cName) {
+    String productId =
+        FirebaseFirestore.instance.collection('product').doc().id;
     try {
       FirebaseFirestore.instance.collection('product').add({
         'ProductId': productId,
         'ProductName': product,
         'ProductPrice': price,
         'CategoryId': cId,
+        'CategoryName': cName,
       });
       Fluttertoast.showToast(msg: 'Product is Added');
       Navigator.pushAndRemoveUntil(

@@ -57,15 +57,13 @@ class _AddCategoryState extends State<AddCategory> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Padding(
-              padding: const EdgeInsets.all(10),
+            mainpadding(
               child: Card(
                 child: Form(
                     key: formKey,
                     child: Column(
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.all(10),
+                        mainpadding(
                           child: textFormField(
                             hintText: 'Category Name',
                             inputType: TextInputType.name,
@@ -106,7 +104,6 @@ class _AddCategoryState extends State<AddCategory> {
   }
 
   getCategory() {
-    int categoryId = 0;
     List<String> categoryList = List();
     Map<String, dynamic> dataMap = Map();
     final formState = formKey.currentState;
@@ -121,23 +118,23 @@ class _AddCategoryState extends State<AddCategory> {
           dataMap = doc.data();
           categoryList.add(dataMap["CategoryName"]);
         });
-        categoryId = categoryList.length + 1;
         if (categoryList.isNotEmpty) {
           if (categoryList.contains(category)) {
             _scaffoldKey.currentState.showSnackBar(
                 SnackBar(content: Text('Category is already exiset')));
           } else {
-            addCategory(categoryId);
+            addCategory();
           }
         } else {
-          addCategory(categoryId);
+          addCategory();
         }
       });
     }
   }
 
-  addCategory(int categoryId) async {
-    int cId = categoryId;
+  addCategory() async {
+    String cId = FirebaseFirestore.instance.collection('category').doc().id;
+    print('----------$cId---------');
     try {
       FirebaseFirestore.instance.collection('category').add({
         'CategoryId': cId,

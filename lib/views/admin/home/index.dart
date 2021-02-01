@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lead_manage/common/backbutton/back_button.dart';
@@ -5,6 +6,12 @@ import 'package:lead_manage/common/widget/common.dart';
 import 'package:lead_manage/views/admin/add/add_category.dart';
 import 'package:lead_manage/views/admin/add/add_lead.dart';
 import 'package:lead_manage/views/admin/add/add_product.dart';
+import 'package:lead_manage/views/admin/details/all_lead.dart';
+import 'package:lead_manage/views/admin/details/converted.dart';
+import 'package:lead_manage/views/admin/details/dead.dart';
+import 'package:lead_manage/views/admin/details/high_priority.dart';
+import 'package:lead_manage/views/admin/details/low_priority.dart';
+import 'package:lead_manage/views/admin/details/medium_priority.dart';
 import 'package:lead_manage/views/login/login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -20,10 +27,14 @@ class AdminIndex extends StatefulWidget {
 class _AdminIndexState extends State<AdminIndex> {
   @override
   void initState() {
-    getValue();
+    setState(() {
+      getValue();
+      countDocuments();
+    });
     super.initState();
   }
 
+  String allLead, converted, dead, highPriority, mediumPriority, lowPriority;
   String userFirstName, userLastName, userUserName, userEmail, userMobileNo;
   void getValue() async {
     final SharedPreferences sharedPrefer =
@@ -154,27 +165,59 @@ class _AdminIndexState extends State<AdminIndex> {
                   child: Column(
                     children: [
                       currentStatus(
-                          statusData: '2',
-                          statusName: 'Following',
-                          function: () {}),
+                          statusData: allLead ?? '0',
+                          statusName: 'All Lead',
+                          function: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => AllLead()));
+                          }),
                       currentStatus(
-                          statusData: '2',
+                          statusData: converted ?? '0',
                           statusName: 'Converted',
-                          function: () {}),
+                          function: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Converted()));
+                          }),
                       currentStatus(
-                          statusData: '2', statusName: 'Dead', function: () {}),
+                          statusData: dead ?? '0',
+                          statusName: 'Dead',
+                          function: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Dead()));
+                          }),
                       currentStatus(
-                          statusData: '2',
+                          statusData: highPriority ?? '0',
                           statusName: 'High Priority',
-                          function: () {}),
+                          function: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => HighPriority()));
+                          }),
                       currentStatus(
-                          statusData: '2',
+                          statusData: mediumPriority ?? '0',
                           statusName: 'Medium Priority',
-                          function: () {}),
+                          function: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => MediumPriority()));
+                          }),
                       currentStatus(
-                          statusData: '2',
+                          statusData: lowPriority ?? '0',
                           statusName: 'Low Priority',
-                          function: () {}),
+                          function: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => LowPriority()));
+                          }),
                     ],
                   ),
                 )
@@ -184,6 +227,63 @@ class _AdminIndexState extends State<AdminIndex> {
         ),
       ),
     );
+  }
+
+  countDocuments() async {
+    QuerySnapshot _allLeadDoc =
+        await FirebaseFirestore.instance.collection('lead').get();
+    List<DocumentSnapshot> _allLeadDocCount = _allLeadDoc.docs;
+    setState(() {
+      return allLead = _allLeadDocCount.length.toString();
+    });
+
+    QuerySnapshot _allHighPriorityLeadDoc = await FirebaseFirestore.instance
+        .collection('lead')
+        .where('Priority', isEqualTo: 'High')
+        .get();
+    List<DocumentSnapshot> _allHighPriorityLeadDocCount =
+        _allHighPriorityLeadDoc.docs;
+    setState(() {
+      return highPriority = _allHighPriorityLeadDocCount.length.toString();
+    });
+
+    QuerySnapshot _allMediumPriorityLeadDoc = await FirebaseFirestore.instance
+        .collection('lead')
+        .where('Priority', isEqualTo: 'Medium')
+        .get();
+    List<DocumentSnapshot> _allMediumPriorityLeadDocCount =
+        _allMediumPriorityLeadDoc.docs;
+    setState(() {
+      return mediumPriority = _allMediumPriorityLeadDocCount.length.toString();
+    });
+
+    QuerySnapshot _allLowPriorityLeadDoc = await FirebaseFirestore.instance
+        .collection('lead')
+        .where('Priority', isEqualTo: 'Low')
+        .get();
+    List<DocumentSnapshot> _allLowPriorityLeadDocCount =
+        _allLowPriorityLeadDoc.docs;
+    setState(() {
+      return lowPriority = _allLowPriorityLeadDocCount.length.toString();
+    });
+
+    QuerySnapshot _allConvertedDoc = await FirebaseFirestore.instance
+        .collection('lead')
+        .where('Status', isEqualTo: 'Converted')
+        .get();
+    List<DocumentSnapshot> _allConvertedDocCount = _allConvertedDoc.docs;
+    setState(() {
+      return converted = _allConvertedDocCount.length.toString();
+    });
+
+    QuerySnapshot _allDeadDoc = await FirebaseFirestore.instance
+        .collection('lead')
+        .where('Status', isEqualTo: 'Dead')
+        .get();
+    List<DocumentSnapshot> _allDeadDocCount = _allDeadDoc.docs;
+    setState(() {
+      return dead = _allDeadDocCount.length.toString();
+    });
   }
 
   Future<void> logOut() async {

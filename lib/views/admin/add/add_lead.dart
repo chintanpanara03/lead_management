@@ -24,7 +24,12 @@ class _AddLeadState extends State<AddLead> {
     super.initState();
   }
 
-  String userFirstName, userLastName, userUserName, userEmail, userMobileNo;
+  String userFirstName,
+      userLastName,
+      userId,
+      userUserName,
+      userEmail,
+      userMobileNo;
   DateTime selectedDate = DateTime.now();
   final GlobalKey<FormState> formKey = GlobalKey();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -75,6 +80,8 @@ class _AddLeadState extends State<AddLead> {
                                     inputType: TextInputType.name,
                                     validator: (value) {
                                       if (value.isEmpty) {
+                                        return 'Please enter First Name';
+                                      } else if (value.contains(' ')) {
                                         return 'Please enter First Name';
                                       }
                                       return null;
@@ -349,7 +356,7 @@ class _AddLeadState extends State<AddLead> {
   }
 
   seleCateId() {
-    int categoryId;
+    String categoryId;
     FirebaseFirestore.instance
         .collection('category')
         .where("CategoryName", isEqualTo: dropdownCategory)
@@ -364,7 +371,7 @@ class _AddLeadState extends State<AddLead> {
     });
   }
 
-  getProduct(int categoryId) {
+  getProduct(String categoryId) {
     Map<String, dynamic> dataMap = Map();
 
     FirebaseFirestore.instance
@@ -398,7 +405,9 @@ class _AddLeadState extends State<AddLead> {
           'LastName': lastName,
           'MobileNo': mobileNo,
           'Priority': dropdownPriority,
-          'Admin': userUserName,
+          'AdminId': userId,
+          'Status': 'Following',
+          'Date': DateTime.now(),
         });
         Fluttertoast.showToast(msg: 'Lead is Added');
         Navigator.pushAndRemoveUntil(
@@ -440,6 +449,7 @@ class _AddLeadState extends State<AddLead> {
     final SharedPreferences sharedPrefer =
         await SharedPreferences.getInstance();
     setState(() {
+      userId = sharedPrefer.getString('user_id');
       userFirstName = sharedPrefer.getString('user_first_name');
       userLastName = sharedPrefer.getString('user_last_name');
       userUserName = sharedPrefer.getString('user_user_name');

@@ -187,8 +187,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
     );
   }
 
-  registration(int userId) async {
-    int uId = userId;
+  registration() async {
     final formState = formKey.currentState;
     String adminId = FirebaseFirestore.instance.collection('admin').doc().id;
     print('adminId  :------------ $adminId');
@@ -209,7 +208,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                 }).then((value) {
                   if (registrationUser != null) {
                     //getUsers();
-                    setValue(uId);
+                    setValue(adminId);
                   }
                 }));
       } catch (e) {
@@ -218,15 +217,14 @@ class _RegistrationPageState extends State<RegistrationPage> {
     }
   }
 
-  void setValue(int id) async {
-    String userId = id.toString();
+  void setValue(String id) async {
     SharedPreferences sharedPrefer = await SharedPreferences.getInstance();
     sharedPrefer.setString('user_first_name', firstName);
     sharedPrefer.setString('user_last_name', lastName);
     sharedPrefer.setString('user_user_name', userName);
     sharedPrefer.setString('user_email', email);
     sharedPrefer.setString('user_mobile_no', mobileNo);
-    sharedPrefer.setString('user_id', userId);
+    sharedPrefer.setString('user_id', id);
     //setValue(firstName.toString());
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => AdminIndex()));
@@ -238,7 +236,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
   // }
 
   getUsers() {
-    int userId = 0;
     List<String> emailList = List();
     Map<String, dynamic> dataMap = Map();
     final formState = formKey.currentState;
@@ -253,7 +250,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
           dataMap = doc.data();
           emailList.add(dataMap["Email"]);
         });
-        userId = emailList.length + 1;
         //print('-----------$userId-----------');
         //print(emailList);
         if (emailList.isNotEmpty) {
@@ -267,11 +263,11 @@ class _RegistrationPageState extends State<RegistrationPage> {
                 context, MaterialPageRoute(builder: (context) => LoginPage()));
           } else {
             //print("------ is not match --------");
-            registration(userId);
+            registration();
           }
         } else {
           //print("------ list is empty --------");
-          registration(userId);
+          registration();
         }
       });
     }

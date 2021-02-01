@@ -1,15 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:lead_manage/common/widget/common.dart';
+import 'package:lead_manage/views/admin/details/details_page.dart';
 
-class Dead extends StatefulWidget {
-  Dead({Key key}) : super(key: key);
+class AllLead extends StatefulWidget {
+  AllLead({Key key}) : super(key: key);
 
   @override
-  _DeadState createState() => _DeadState();
+  _AllLeadState createState() => _AllLeadState();
 }
 
-class _DeadState extends State<Dead> {
+class _AllLeadState extends State<AllLead> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,7 +23,7 @@ class _DeadState extends State<Dead> {
             child: StreamBuilder<QuerySnapshot>(
                 stream: FirebaseFirestore.instance
                     .collection('lead')
-                    .where('Status', isEqualTo: 'Dead')
+                    .where('Status', isEqualTo: 'Following')
                     .snapshots(),
                 builder: (BuildContext context,
                     AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -37,7 +38,7 @@ class _DeadState extends State<Dead> {
                       children:
                           snapshot.data.docs.map((DocumentSnapshot document) {
                         return GestureDetector(
-                          onTap: () {},
+                          onTap: () => navigateToDetails(document),
                           child: Card(
                               child: Padding(
                                   padding: const EdgeInsets.all(8.0),
@@ -98,5 +99,14 @@ class _DeadState extends State<Dead> {
                 })),
       ),
     );
+  }
+
+  navigateToDetails(DocumentSnapshot post) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => DetailsPage(
+                  post: post,
+                )));
   }
 }
