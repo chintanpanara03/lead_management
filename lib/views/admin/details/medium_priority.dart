@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:lead_manage/common/widget/common.dart';
+import 'package:lead_manage/views/admin/details/details_page.dart';
 
 class MediumPriority extends StatefulWidget {
   MediumPriority({Key key}) : super(key: key);
@@ -14,7 +15,7 @@ class _MediumPriorityState extends State<MediumPriority> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: detailsappbar(
-        appbarTitle: 'All Lead',
+        appbarTitle: 'Medium-Priority Lead',
       ),
       body: mainpadding(
         child: Container(
@@ -37,7 +38,7 @@ class _MediumPriorityState extends State<MediumPriority> {
                       children:
                           snapshot.data.docs.map((DocumentSnapshot document) {
                         return GestureDetector(
-                          onTap: () {},
+                          onTap: () => navigateToDetails(document),
                           child: Card(
                               child: Padding(
                                   padding: const EdgeInsets.all(8.0),
@@ -89,6 +90,17 @@ class _MediumPriorityState extends State<MediumPriority> {
                                           ),
                                         )
                                       ]),
+                                      TableRow(children: [
+                                        SizedBox(),
+                                        simplepadding(
+                                          child: Align(
+                                            alignment: Alignment.centerRight,
+                                            child: simpleText(
+                                                text:
+                                                    '${document['Date'].toDate().toString().split(' ')[0]}'),
+                                          ),
+                                        )
+                                      ]),
                                     ],
                                   ))),
                         );
@@ -98,5 +110,14 @@ class _MediumPriorityState extends State<MediumPriority> {
                 })),
       ),
     );
+  }
+
+  navigateToDetails(DocumentSnapshot post) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => DetailsPage(
+                  post: post,
+                )));
   }
 }

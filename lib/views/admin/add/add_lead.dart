@@ -391,11 +391,13 @@ class _AddLeadState extends State<AddLead> {
   }
 
   addLead() {
+    String leadId = FirebaseFirestore.instance.collection('lead').doc().id;
     final formState = formKey.currentState;
     if (formState.validate()) {
       formState.save();
       try {
         FirebaseFirestore.instance.collection('lead').add({
+          'LeadId': leadId,
           'CategoryName': dropdownCategory,
           'ProductName': dropdownProduct,
           'City': city,

@@ -31,7 +31,7 @@ class _AllLeadState extends State<AllLead> {
                     return new Text('Error: ${snapshot.error}');
                   } else if (snapshot.connectionState ==
                       ConnectionState.waiting) {
-                    return new Text('Loading...');
+                    return Center(child: new Text('Loading...'));
                   } else {
                     return ListView(
                       //shrinkWrap: true,
@@ -87,6 +87,17 @@ class _AllLeadState extends State<AllLead> {
                                             child: simpleText(
                                                 text:
                                                     '${document['Priority']}'),
+                                          ),
+                                        )
+                                      ]),
+                                      TableRow(children: [
+                                        SizedBox(),
+                                        simplepadding(
+                                          child: Align(
+                                            alignment: Alignment.centerRight,
+                                            child: simpleText(
+                                                text:
+                                                    '${document['Date'].toDate().toString().split(' ')[0]}'),
                                           ),
                                         )
                                       ]),

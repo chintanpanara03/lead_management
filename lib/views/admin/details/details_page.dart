@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:lead_manage/common/widget/common.dart';
+import 'package:lead_manage/views/admin/home/index.dart';
 
 class DetailsPage extends StatefulWidget {
   final DocumentSnapshot post;
@@ -15,10 +16,14 @@ class _DetailsPageState extends State<DetailsPage> {
       lastName,
       mobileNo,
       email,
+      categoryName,
       productName,
       status,
       priority,
-      id;
+      id,
+      leadId;
+  Timestamp date;
+
   @override
   void initState() {
     setState(() {
@@ -33,15 +38,44 @@ class _DetailsPageState extends State<DetailsPage> {
     mobileNo = widget.post.get('MobileNo');
     email = widget.post.get('Email');
     productName = widget.post.get('ProductName');
+    categoryName = widget.post.get('CategoryName');
     status = widget.post.get('Status');
     priority = widget.post.get('Priority');
-    id = widget.post.get('AdminId');
+    leadId = widget.post.get('LeadId');
+    date = widget.post.get('Date');
+    id = widget.post.id;
   }
 
   priorityColor() {
-    if (status == 'Low') {
-    } else if (status == 'Medium') {
-    } else {}
+    if (priority == 'High') {
+      return BoxDecoration(
+        color: Colors.purple[400],
+      );
+    } else if (priority == 'Medium') {
+      return BoxDecoration(
+        color: Colors.lightGreen,
+      );
+    } else {
+      return BoxDecoration(
+        color: Colors.grey[400],
+      );
+    }
+  }
+
+  statusColor() {
+    if (status == 'Following') {
+      return BoxDecoration(
+        color: Colors.blue,
+      );
+    } else if (status == 'Converted') {
+      return BoxDecoration(
+        color: Colors.green,
+      );
+    } else {
+      return BoxDecoration(
+        color: Colors.red,
+      );
+    }
   }
 
   @override
@@ -55,7 +89,9 @@ class _DetailsPageState extends State<DetailsPage> {
           actions: [
             IconButton(
               icon: Icon(Icons.more_vert_rounded),
-              onPressed: () {},
+              onPressed: () {
+                showPopUpMenu();
+              },
             ),
           ],
         ),
@@ -63,7 +99,7 @@ class _DetailsPageState extends State<DetailsPage> {
           children: [
             Container(
                 color: Colors.black54,
-                height: 130,
+                height: 170,
                 child: mainpadding(
                   child: Column(
                     children: [
@@ -74,9 +110,7 @@ class _DetailsPageState extends State<DetailsPage> {
                             child: Container(
                               width: MediaQuery.of(context).size.width / 3.5,
                               height: 30,
-                              decoration: BoxDecoration(
-                                color: Colors.blue[300],
-                              ),
+                              decoration: statusColor(),
                               child: Align(
                                 alignment: Alignment.center,
                                 child: boldTextColor(text: status),
@@ -87,7 +121,7 @@ class _DetailsPageState extends State<DetailsPage> {
                             child: Container(
                               width: MediaQuery.of(context).size.width / 3.5,
                               height: 30,
-                              color: Colors.amber,
+                              decoration: priorityColor(),
                               child: Align(
                                 alignment: Alignment.center,
                                 child: boldTextColor(text: priority),
@@ -109,7 +143,7 @@ class _DetailsPageState extends State<DetailsPage> {
                             simplepadding(
                               child: Align(
                                 alignment: Alignment.centerRight,
-                                child: simpleTextColor(text: '$productName'),
+                                child: simpleTextColor(text: '$categoryName'),
                               ),
                             ),
                           ]),
@@ -134,7 +168,23 @@ class _DetailsPageState extends State<DetailsPage> {
                             simplepadding(
                               child: Align(
                                 alignment: Alignment.centerRight,
+                                child: simpleTextColor(text: '$productName'),
+                              ),
+                            ),
+                          ]),
+                          TableRow(children: [
+                            simplepadding(
+                              child: Align(
+                                alignment: Alignment.centerLeft,
                                 child: simpleTextColor(text: '$email'),
+                              ),
+                            ),
+                            simplepadding(
+                              child: Align(
+                                alignment: Alignment.centerRight,
+                                child: simpleTextColor(
+                                    text:
+                                        '${date.toDate().toString().split(' ')[0]}'),
                               ),
                             ),
                           ]),
@@ -145,5 +195,57 @@ class _DetailsPageState extends State<DetailsPage> {
                 )),
           ],
         ));
+  }
+
+  showPopUpMenu() async {
+    await showMenu(
+        context: context,
+        position: RelativeRect.fromLTRB(100, 70, 0, 0),
+        items: [
+          PopupMenuItem(
+              child: GestureDetector(
+                  child: Text('Converted'),
+                  onTap: () {
+                    convertedStatus();
+                  })),
+          PopupMenuItem(
+              child: GestureDetector(
+                  child: Text('Dead'),
+                  onTap: () {
+                    deadStatus();
+                  })),
+          PopupMenuItem(
+              child: GestureDetector(child: Text('Edit'), onTap: () {})),
+          PopupMenuItem(
+              child: GestureDetector(
+                  child: Text('Delete'),
+                  onTap: () {
+                    deleteLead();
+                  })),
+        ]);
+  }
+
+  convertedStatus() {
+    FirebaseFirestore.instance
+        .collection('lead')
+        .doc(id)
+        .update({'Status': 'Converted'});
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => AdminIndex()));
+  }
+
+  deadStatus() {
+    FirebaseFirestore.instance
+        .collection('lead')
+        .doc(id)
+        .update({'Status': 'Dead'});
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => AdminIndex()));
+  }
+
+  deleteLead() {
+    FirebaseFirestore.instance.collection('lead').doc(id).delete();
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => AdminIndex()));
   }
 }

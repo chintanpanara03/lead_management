@@ -230,8 +230,10 @@ class _AdminIndexState extends State<AdminIndex> {
   }
 
   countDocuments() async {
-    QuerySnapshot _allLeadDoc =
-        await FirebaseFirestore.instance.collection('lead').get();
+    QuerySnapshot _allLeadDoc = await FirebaseFirestore.instance
+        .collection('lead')
+        .where('Status', isEqualTo: 'Following')
+        .get();
     List<DocumentSnapshot> _allLeadDocCount = _allLeadDoc.docs;
     setState(() {
       return allLead = _allLeadDocCount.length.toString();

@@ -207,8 +207,6 @@ Widget commonDrawer(
       SizedBox(
         height: 10.0,
       ),
-      //Now let's Add the button for the Menu
-      //and let's copy that and modify it
       ListTile(
         onTap: () {},
         leading: Icon(
@@ -217,7 +215,6 @@ Widget commonDrawer(
         ),
         title: Text("Dashboard"),
       ),
-
       ListTile(
         onTap: () {},
         leading: Icon(
@@ -242,7 +239,6 @@ Widget commonDrawer(
         ),
         title: Text("Add Product"),
       ),
-
       ListTile(
         onTap: () {},
         leading: Icon(
@@ -251,7 +247,6 @@ Widget commonDrawer(
         ),
         title: Text("Your Profile"),
       ),
-
       ListTile(
         onTap: () {},
         leading: Icon(
@@ -333,13 +328,13 @@ Widget boldTextColor({String text}) {
   return Text(
     text,
     style: TextStyle(
-        fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+        fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
   );
 }
 
 Widget simpleTextColor({String text}) {
   return Text(
     text,
-    style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+    style: TextStyle(fontSize: 14, color: Colors.white),
   );
 }

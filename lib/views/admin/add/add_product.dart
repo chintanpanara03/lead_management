@@ -177,6 +177,7 @@ class _AddProductState extends State<AddProduct> {
 
     FirebaseFirestore.instance
         .collection('product')
+        .where('CategoryName', isEqualTo: dropdownValue)
         .get()
         .then((QuerySnapshot snapshot) {
       snapshot.docs.forEach((DocumentSnapshot doc) {
