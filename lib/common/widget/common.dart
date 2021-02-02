@@ -171,7 +171,15 @@ Widget appbar(
 }
 
 Widget commonDrawer(
-    {double headerWidth = 305, String adminName, String adminEmail}) {
+    {double headerWidth = 305,
+    String adminName,
+    String adminEmail,
+    Function dashboard,
+    Function addlead,
+    Function addcategory,
+    Function addproduct,
+    Function yourprofile,
+    Function setting}) {
   return Drawer(
     child: Column(children: [
       Container(
@@ -208,7 +216,7 @@ Widget commonDrawer(
         height: 10.0,
       ),
       ListTile(
-        onTap: () {},
+        onTap: dashboard,
         leading: Icon(
           Icons.dashboard,
           color: Colors.black,
@@ -216,7 +224,7 @@ Widget commonDrawer(
         title: Text("Dashboard"),
       ),
       ListTile(
-        onTap: () {},
+        onTap: addlead,
         leading: Icon(
           Icons.person_add,
           color: Colors.black,
@@ -224,7 +232,7 @@ Widget commonDrawer(
         title: Text("Add Lead"),
       ),
       ListTile(
-        onTap: () {},
+        onTap: addcategory,
         leading: Icon(
           Icons.category,
           color: Colors.black,
@@ -232,7 +240,7 @@ Widget commonDrawer(
         title: Text("Add Category"),
       ),
       ListTile(
-        onTap: () {},
+        onTap: addproduct,
         leading: Icon(
           Icons.add_circle_outline,
           color: Colors.black,
@@ -240,7 +248,7 @@ Widget commonDrawer(
         title: Text("Add Product"),
       ),
       ListTile(
-        onTap: () {},
+        onTap: yourprofile,
         leading: Icon(
           Icons.person,
           color: Colors.black,
@@ -248,7 +256,7 @@ Widget commonDrawer(
         title: Text("Your Profile"),
       ),
       ListTile(
-        onTap: () {},
+        onTap: setting,
         leading: Icon(
           Icons.settings,
           color: Colors.black,

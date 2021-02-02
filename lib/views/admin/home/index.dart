@@ -12,6 +12,8 @@ import 'package:lead_manage/views/admin/details/dead.dart';
 import 'package:lead_manage/views/admin/details/high_priority.dart';
 import 'package:lead_manage/views/admin/details/low_priority.dart';
 import 'package:lead_manage/views/admin/details/medium_priority.dart';
+import 'package:lead_manage/views/admin/details/setting.dart';
+import 'package:lead_manage/views/admin/profile/profile.dart';
 import 'package:lead_manage/views/login/login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -63,9 +65,34 @@ class _AdminIndexState extends State<AdminIndex> {
           },
           logoutFunction: logOut),
       drawer: commonDrawer(
-          adminName: '$userFirstName  $userLastName',
-          adminEmail: '$userEmail',
-          headerWidth: devicewidth),
+        adminName: '$userFirstName  $userLastName',
+        adminEmail: '$userEmail',
+        headerWidth: devicewidth,
+        dashboard: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => AdminIndex()));
+        },
+        addcategory: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => AddCategory()));
+        },
+        addlead: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => AddLead()));
+        },
+        addproduct: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => AddProduct()));
+        },
+        setting: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => Setting()));
+        },
+        yourprofile: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => Profile()));
+        },
+      ),
       body: WillPopScope(
         onWillPop: onWillPop,
         child: Center(

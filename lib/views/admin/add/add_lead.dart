@@ -4,7 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lead_manage/common/connectivity/internet_status.dart';
 import 'package:lead_manage/common/widget/common.dart';
+import 'package:lead_manage/views/admin/add/add_category.dart';
+import 'package:lead_manage/views/admin/add/add_product.dart';
+import 'package:lead_manage/views/admin/details/setting.dart';
 import 'package:lead_manage/views/admin/home/index.dart';
+import 'package:lead_manage/views/admin/profile/profile.dart';
 import 'package:lead_manage/views/login/login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -53,9 +57,34 @@ class _AddLeadState extends State<AddLead> {
           },
           logoutFunction: logOut),
       drawer: commonDrawer(
-          adminName: '$userFirstName  $userLastName',
-          adminEmail: '$userEmail',
-          headerWidth: devicewidth),
+        adminName: '$userFirstName  $userLastName',
+        adminEmail: '$userEmail',
+        headerWidth: devicewidth,
+        dashboard: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => AdminIndex()));
+        },
+        addcategory: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => AddCategory()));
+        },
+        addlead: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => AddLead()));
+        },
+        addproduct: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => AddProduct()));
+        },
+        setting: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => Setting()));
+        },
+        yourprofile: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => Profile()));
+        },
+      ),
       body: Center(
         child: SingleChildScrollView(
           child: Column(

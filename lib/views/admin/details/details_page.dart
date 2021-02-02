@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:lead_manage/common/widget/common.dart';
+import 'package:lead_manage/views/admin/add/add_follow.dart';
 import 'package:lead_manage/views/admin/home/index.dart';
 
 class DetailsPage extends StatefulWidget {
@@ -81,120 +82,128 @@ class _DetailsPageState extends State<DetailsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          elevation: 0.0,
-          backgroundColor: Colors.black54,
-          centerTitle: true,
-          title: Text('Lead Details'),
-          actions: [
-            IconButton(
-              icon: Icon(Icons.more_vert_rounded),
-              onPressed: () {
-                showPopUpMenu();
-              },
-            ),
-          ],
-        ),
-        body: Column(
-          children: [
-            Container(
-                color: Colors.black54,
-                height: 170,
-                child: mainpadding(
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
+      appBar: AppBar(
+        elevation: 0.0,
+        backgroundColor: Colors.black54,
+        centerTitle: true,
+        title: Text('Lead Details'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.more_vert_rounded),
+            onPressed: () {
+              showPopUpMenu();
+            },
+          ),
+        ],
+      ),
+      body: Column(
+        children: [
+          Container(
+              color: Colors.black54,
+              height: 170,
+              child: mainpadding(
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        simplepadding(
+                          child: Container(
+                            width: MediaQuery.of(context).size.width / 3.5,
+                            height: 30,
+                            decoration: statusColor(),
+                            child: Align(
+                              alignment: Alignment.center,
+                              child: boldTextColor(text: status),
+                            ),
+                          ),
+                        ),
+                        simplepadding(
+                          child: Container(
+                            width: MediaQuery.of(context).size.width / 3.5,
+                            height: 30,
+                            decoration: priorityColor(),
+                            child: Align(
+                              alignment: Alignment.center,
+                              child: boldTextColor(text: priority),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Table(
+                      children: [
+                        TableRow(children: [
                           simplepadding(
-                            child: Container(
-                              width: MediaQuery.of(context).size.width / 3.5,
-                              height: 30,
-                              decoration: statusColor(),
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: boldTextColor(text: status),
-                              ),
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child:
+                                  boldTextColor(text: '$firstName $lastName'),
                             ),
                           ),
                           simplepadding(
-                            child: Container(
-                              width: MediaQuery.of(context).size.width / 3.5,
-                              height: 30,
-                              decoration: priorityColor(),
-                              child: Align(
-                                alignment: Alignment.center,
-                                child: boldTextColor(text: priority),
-                              ),
+                            child: Align(
+                              alignment: Alignment.centerRight,
+                              child: simpleTextColor(text: '$categoryName'),
                             ),
                           ),
-                        ],
-                      ),
-                      Table(
-                        children: [
-                          TableRow(children: [
-                            simplepadding(
-                              child: Align(
+                        ]),
+                        TableRow(children: [
+                          simplepadding(
+                            child: Align(
                                 alignment: Alignment.centerLeft,
-                                child:
-                                    boldTextColor(text: '$firstName $lastName'),
-                              ),
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.phone_forwarded,
+                                      size: 15,
+                                      color: Colors.white,
+                                    ),
+                                    SizedBox(
+                                      width: 8,
+                                    ),
+                                    simpleTextColor(text: '$mobileNo'),
+                                  ],
+                                )),
+                          ),
+                          simplepadding(
+                            child: Align(
+                              alignment: Alignment.centerRight,
+                              child: simpleTextColor(text: '$productName'),
                             ),
-                            simplepadding(
-                              child: Align(
-                                alignment: Alignment.centerRight,
-                                child: simpleTextColor(text: '$categoryName'),
-                              ),
+                          ),
+                        ]),
+                        TableRow(children: [
+                          simplepadding(
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: simpleTextColor(text: '$email'),
                             ),
-                          ]),
-                          TableRow(children: [
-                            simplepadding(
-                              child: Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Row(
-                                    children: [
-                                      Icon(
-                                        Icons.phone_forwarded,
-                                        size: 15,
-                                        color: Colors.white,
-                                      ),
-                                      SizedBox(
-                                        width: 8,
-                                      ),
-                                      simpleTextColor(text: '$mobileNo'),
-                                    ],
-                                  )),
+                          ),
+                          simplepadding(
+                            child: Align(
+                              alignment: Alignment.centerRight,
+                              child: simpleTextColor(
+                                  text:
+                                      '${date.toDate().toString().split(' ')[0]}'),
                             ),
-                            simplepadding(
-                              child: Align(
-                                alignment: Alignment.centerRight,
-                                child: simpleTextColor(text: '$productName'),
-                              ),
-                            ),
-                          ]),
-                          TableRow(children: [
-                            simplepadding(
-                              child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: simpleTextColor(text: '$email'),
-                              ),
-                            ),
-                            simplepadding(
-                              child: Align(
-                                alignment: Alignment.centerRight,
-                                child: simpleTextColor(
-                                    text:
-                                        '${date.toDate().toString().split(' ')[0]}'),
-                              ),
-                            ),
-                          ]),
-                        ],
-                      )
-                    ],
-                  ),
-                )),
-          ],
-        ));
+                          ),
+                        ]),
+                      ],
+                    )
+                  ],
+                ),
+              )),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => AddFollows()));
+        },
+        child: Icon(Icons.add),
+      ),
+    );
   }
 
   showPopUpMenu() async {
