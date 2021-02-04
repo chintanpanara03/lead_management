@@ -31,7 +31,12 @@ class _AdminIndexState extends State<AdminIndex> {
   void initState() {
     setState(() {
       getValue();
-      countDocuments();
+      countStatusFollowing();
+      countStatusConverted();
+      countStatusDead();
+      countPriorityMediume();
+      countPriorityHigh();
+      countPriorityLow();
     });
     super.initState();
   }
@@ -256,7 +261,7 @@ class _AdminIndexState extends State<AdminIndex> {
     );
   }
 
-  countDocuments() async {
+  countStatusFollowing() async {
     QuerySnapshot _allLeadDoc = await FirebaseFirestore.instance
         .collection('lead')
         .where('Status', isEqualTo: 'Following')
@@ -265,7 +270,9 @@ class _AdminIndexState extends State<AdminIndex> {
     setState(() {
       return allLead = _allLeadDocCount.length.toString();
     });
+  }
 
+  countPriorityHigh() async {
     QuerySnapshot _allHighPriorityLeadDoc = await FirebaseFirestore.instance
         .collection('lead')
         .where('Priority', isEqualTo: 'High')
@@ -275,7 +282,9 @@ class _AdminIndexState extends State<AdminIndex> {
     setState(() {
       return highPriority = _allHighPriorityLeadDocCount.length.toString();
     });
+  }
 
+  countPriorityMediume() async {
     QuerySnapshot _allMediumPriorityLeadDoc = await FirebaseFirestore.instance
         .collection('lead')
         .where('Priority', isEqualTo: 'Medium')
@@ -285,7 +294,9 @@ class _AdminIndexState extends State<AdminIndex> {
     setState(() {
       return mediumPriority = _allMediumPriorityLeadDocCount.length.toString();
     });
+  }
 
+  countPriorityLow() async {
     QuerySnapshot _allLowPriorityLeadDoc = await FirebaseFirestore.instance
         .collection('lead')
         .where('Priority', isEqualTo: 'Low')
@@ -295,7 +306,9 @@ class _AdminIndexState extends State<AdminIndex> {
     setState(() {
       return lowPriority = _allLowPriorityLeadDocCount.length.toString();
     });
+  }
 
+  countStatusConverted() async {
     QuerySnapshot _allConvertedDoc = await FirebaseFirestore.instance
         .collection('lead')
         .where('Status', isEqualTo: 'Converted')
@@ -304,7 +317,9 @@ class _AdminIndexState extends State<AdminIndex> {
     setState(() {
       return converted = _allConvertedDocCount.length.toString();
     });
+  }
 
+  countStatusDead() async {
     QuerySnapshot _allDeadDoc = await FirebaseFirestore.instance
         .collection('lead')
         .where('Status', isEqualTo: 'Dead')
