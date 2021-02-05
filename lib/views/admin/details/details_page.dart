@@ -198,8 +198,11 @@ class _DetailsPageState extends State<DetailsPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
+          String leadId = id;
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => AddFollows()));
+              context,
+              MaterialPageRoute(
+                  builder: (context) => AddFollows(leadId: leadId)));
         },
         child: Icon(Icons.add),
       ),
